@@ -1,0 +1,49 @@
+# Google Scholar page (you can choose how you sort it)
+url: "http://scholar.google.com/citations?sortby=pubdate&hl=en&user=k6y0EGsAAAAJ&view_op=list_works"
+
+# Name to highlight 
+highlight: "Y Wurm"
+
+
+# Need an Email address that has been registered with CrossRef to obtain DOIs 
+# using their OpenURL service. 
+# e.g. the following should provide an XML file: 
+# http://www.crossref.org/openurl?redirect=false&pid=YOUR@EMAIL>COM&aulast=Wurm&atitle=Behavioral%20Genomics:%20A,%20Bee,%20C,%20G,%20T
+email: your@email.com
+
+
+# Show "[Cited Nx]" if N > the following number
+minCitations: 5
+
+# Words to italicize (emphasize). These will have "<em>" around them. 
+italicize: 
+ - Solenopsis invicta
+ - Acromyrmex echinatior
+ - de novo
+
+# DOIs of articles for which we should show altmetric.org badges. 
+altmetricDOIs: 
+ - "10.1038/nature11832"
+ - "10.1101/gr.121392.111"
+ - "10.1073/pnas.1009690108"
+ - "10.1073/pnas.1104825108"
+
+# Article titles for which we have urls to PDFs
+pdfs:
+  "A Y-like social chromosome causes alternative colony organization in fire ants" : "/publications/wangwurm2013socialChromosome.pdf"
+  "Duplication and concerted evolution in a master sex determiner under balancing selection" : "/publications/procb2013.pdf"
+  "Comparative genomics of chemosensory protein genes reveals rapid evolution and positive selection in ant-specific duplicates" : "/publications/hdy2012122a.pdf"
+  "The Molecular Clockwork of the Fire Ant Solenopsis invicta" : "/publications/ingram2012-fireAntClockGenes.pdf"
+  "Epigenetics: The Making of Ant Castes" : "/publications/2012CurrBiolAntepigenetics.pdf"
+  "Visualization and quality assessment of de novo genome assemblies" : "/publications/Bioinformatics-2011-Riba-Grognuz-3425-6"
+  "The genomic impact of 100 million years of social evolution in seven ant species" : "/publications/TiG2011.pdf"
+  "Relaxed selection is a precursor to the evolution of phenotypic plasticity" : "/publications/hunt2011phenotypicPlasticity.pdf"
+  "The genome of the leaf-cutting ant Acromyrmex echinatior suggests key adaptations to advanced social life and fungus farming" : "/publications/nygaard2011-acromyrmex-genome.pdf"
+  "Behind the Scenes of an Ant Genome Project" : "/publications/wurm2011antGenomeBehindTheScenes.pdf"
+  "The genome of the fire ant Solenopsis invicta" : "/publications/wurm2011fireAntGenome.pdf"
+  "Odorant Binding Proteins of the Red Imported Fire Ant, Solenopsis invicta: An Example of the Problems Facing the Analysis of Widely Divergent Proteins" : "/publications/gotzek2011obps.pdf"
+  "Parasitoid Wasps: From Natural History to Genomic Studies" : "/publications/wurm2010wasps.pdf"
+  "Changes in reproductive roles are associated with changes in gene expression in fire ant queens" : "/publications/wurm2010fireAntQueenDealationExpression.pdf"
+  "Fourmidable: a database for ant genomics" : "/publications/wurm2009antDatabase.pdf"
+  "Behavioral Genomics: A, Bee, C, G, T" : "/publications/wurm2007bees.pdf"
+  "An annotated cDNA library and microarray for large-scale gene-expression studies in the ant Solenopsis invicta" : "/publications/wang2007fireAntMicroarrays.pdf"
