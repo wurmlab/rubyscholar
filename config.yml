@@ -1,6 +1,9 @@
 # Google Scholar page (you can choose how you sort it)
 url: "http://scholar.google.com/citations?sortby=pubdate&hl=en&user=k6y0EGsAAAAJ&view_op=list_works"
 
+
+#### Everything below this line is OPTIONAL ####
+
 # Name to highlight 
 highlight: "Y Wurm"
 
