@@ -22,10 +22,10 @@ Some features:
 
  * uses author list as visible on your main Google Scholar page. Sometimes this 
    means names are chopped in two or just a single author is missing. This could
-   be made smarter. 
+   be made smarter (by following the link to get the full author list). 
+ * output format could be more flexible. (e.g. change order (eg title before authors), or change formatting (e.g. remove first initial)). Perhaps this could be done with by providing a regexp search/replace configuration option within each field.
  * Ensure that a true email is entered. 
  * right now only works from "user profile" pages. Not from "articles citing article" pages. 
- * flexible output
  * flexible use of DOIs
 
 # Technologies
