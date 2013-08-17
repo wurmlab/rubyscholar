@@ -23,6 +23,8 @@ Some features:
  * uses author list as visible on your main Google Scholar page. Sometimes this 
    means names are chopped in two or just a single author is missing. This could
    be made smarter. 
+ * Ensure that a true email is entered. 
+ * right now only works from "user profile" pages. Not from "articles citing article" pages. 
  * flexible output
  * flexible use of DOIs
 
