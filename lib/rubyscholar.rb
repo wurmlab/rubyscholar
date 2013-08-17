@@ -24,7 +24,7 @@ class RubyScholar
 
     def parse(url)
       papers = Nokogiri::HTML(open(url)).css(".cit-table .item")
-      STDOUT << "Found #{papers.length} papers.\n"
+      STDERR << "Found #{papers.length} papers.\n"
       papers.each do |paper|
         paperDetails   = paper.css("#col-title")
         title          = paperDetails[0].children[0].content.clean
@@ -49,7 +49,7 @@ class RubyScholar
 
         @parsedPapers.push(Paper.new( title, googleUrl, authors, journalName, journalDetails, year, citationCount, citationUrl, doi))
       end
-      STDOUT << "Scraped #{parsedPapers.length} from Google Scholar.\n"
+      STDERR << "Scraped #{parsedPapers.length} from Google Scholar.\n"
     end
 
     # Scholar doesn't provide DOI. 
