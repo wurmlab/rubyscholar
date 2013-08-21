@@ -9,7 +9,7 @@ class String
   end
 end
 
-class RubyScholar
+module RubyScholar
   class Paper < Struct.new(:title, :url, :authors, :journalName, :journalDetails, :year, :citationCount, :citingPapers, :doi)
   end  
   
