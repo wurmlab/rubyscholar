@@ -1,3 +1,5 @@
+# Rubyscholar
+
 # Synopsis
 
 Here is a small script to "scrape" your Google Scholar citations and reformat them (the way I need it for my website). 
@@ -11,12 +13,13 @@ Some features:
 
 # How to use:
 
+### As a ruby script:
 1. Configure "config.yml"
    If you want DOI retreival to work (including Altmetrics), you need to be 
    registered at crossref (its free). 
-2. Run `ruby bin/scrape.rb > mypublications.html`
-3. Thats it. 
-
+2. Run `ruby bin/scrape.rb` 
+3. A scholar.html file is created with your publications from google scholar. 
+4. Thats it. 
 
 # Potential for improvement:
 
@@ -38,5 +41,12 @@ RubyScholar was developed by Yannick Wurm (http://yannick.poulet.org). Pull requ
 
 # Copyright
 
-RubyScholar © 2013 by Yannick Wurm. Licensed under the MIT license. 
+RubyScholar Â© 2013 by Yannick Wurm. Licensed under the MIT license. 
 
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request

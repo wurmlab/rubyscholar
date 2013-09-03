@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'rubygems'
+require 'commander/import'
+require 'rubyscholar'
+require 'yaml'
+
+
+program :name, 'rubysholar'
+program :version, Rubyscholar::VERSION
+program :description, 'Rubyscholar scrapes google scholar and formats it into a scholar.html file.'
+
+default_command :scrape
+
+command :scrape do |c|
+  c.syntax = 'rubyscholar scrape [options]'
+  c.description = "Scape google scholar for new publications"
+
+  c.option '--config [Config File]', 'Config file to use'
+  c.option '--out [Output File]', 'File to output the scrapes to'
+
+  c.action do |args, options|
+   options.default \
+      :interval => 2,
+      :timeout  => 60
+   config    = YAML.load_file('{options.config}')
+   parsed    = Rubyscholar::Parser.new(config["url"], 
+                                config["email"])
+   formatter = Rubyscholar::Formatter.new(parsed, 
+                                        config["highlight"], 
+                                        config["pdfs"], 
+                                        config["altmetricDOIs"], 
+                                        config["minCitations"].to_i)
+
+   html = formatter.to_html
+       config["italicize"].each do |term|
+       html.gsub!( term , '<em>' + term + '</em>')
+   end
+
+   f= File.open('{options.out}','w')
+   f.write html
+   f.close
+  end
+end
+

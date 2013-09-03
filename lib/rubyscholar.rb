@@ -1,7 +1,9 @@
+require "rubyscholar/version"
 require "nokogiri"
 require "open-uri"
 
-class String
+module Rubyscholar
+ class String
   def clean
     # removes leading and trailing whitespace, commas
     self.gsub!(/(^[\s,]+)|([\s,]+$)/, '')
@@ -9,7 +11,7 @@ class String
   end
 end
 
-class RubyScholar
+
   class Paper < Struct.new(:title, :url, :authors, :journalName, :journalDetails, :year, :citationCount, :citingPapers, :doi)
   end  
   
@@ -88,21 +90,21 @@ class RubyScholar
                 doc.p {
                   doc.text ((@parser.parsedPapers).length - index).to_s + '. ' 
 
+                  doc.b    paper[:title] + '.'
+                  doc.text ' (' + paper[:year] + '). '
+
                   if paper[:authors].include?(@nameToHighlight)
                     doc.text( paper[:authors].sub(Regexp.new(@nameToHighlight + '.*'), '') )
-                    doc.span( :class => "me") { doc.text @nameToHighlight }
+                    doc.span( :class => "label label-info") { doc.text @nameToHighlight }
                     doc.text( paper[:authors].sub(Regexp.new('.*' + @nameToHighlight), '') )
                   else
                     doc.text( paper[:authors])
                   end
-                                    
-                  doc.text ' ' + paper[:year] + '. '
-                  doc.b    paper[:title] + '.'
+
                   doc.br
                   doc.em   paper[:journalName]
                   doc.text ' '
                   doc.text paper[:journalDetails]
-                  
                   unless paper[ :doi].empty?
                     doc.text(' ')
                     doc.a( :href => URI.join("http://dx.doi.org/", paper[ :doi]))  { 
@@ -137,5 +139,3 @@ class RubyScholar
     end
   end
 end
-
-
