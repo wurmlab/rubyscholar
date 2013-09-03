@@ -1,4 +1,4 @@
-Copyright (c) 2013 Gaurav Koley
+Copyright (c) 2013 Yannick Wurm
 
 MIT License
 
