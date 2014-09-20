@@ -18,30 +18,33 @@ command :scrape do |c|
   c.description = "Scrape Google Scholar for new publications"
 
   c.option '--config [Config File]', 'Config file to use'
-  c.option '--out [Output File]', 'HTML output for publication list'
-
+  c.option '--output [Output File]',  'HTML output for publication list'
+  
   c.action do |args, options|
     options.default \
-      :interval => 2,
-      :timeout  => 60
+    :config => 'config.yaml',
+    :output  => 'publications.html'
+    #rest stays in this block bc we need to access options
+
     raise IOError, "You must specify config file via --config\n" if options.config.nil?
     config    = YAML.load_file(options.config) 
     parsed    = Rubyscholar::Parser.new(config["url"], 
                                         config["email"])
-    formatter = Rubyscholar::Formatter.new(parsed, 
-                                           config["highlight"], 
-                                           config["pdfs"], 
-                                           config["altmetricDOIs"], 
-                                           config["minCitations"].to_i)
+    html = Rubyscholar::Formatter.new(parsed, 
+                                      config["highlight"], 
+                                      config["pdfs"], 
+                                      config["altmetricDOIs"], 
+                                      config["minCitations"].to_i
+                                      ).to_html
     
-    html = formatter.to_html
     config["italicize"].each do |term|
       html.gsub!( term , '<em>' + term + '</em>')
     end
 
-    f= File.open('{options.out}','w')
+    STDERR << "Outputting to #{options.output}\n."
+    f = File.open(options.output,'w')
     f.write html
     f.close
-  end
+  end 
 end
 

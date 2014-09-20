@@ -1,9 +1,9 @@
-require "nokogiri"
-require "open-uri"
+require 'nokogiri'
+require 'open-uri'
 require 'rubyscholar-version'
 
-module Rubyscholar
- class String
+
+class String
   def clean
     # removes leading and trailing whitespace, commas
     self.gsub!(/(^[\s,]+)|([\s,]+$)/, '')
@@ -11,7 +11,7 @@ module Rubyscholar
   end
 end
 
-
+module Rubyscholar
   class Paper < Struct.new(:title, :url, :authors, :journalName, :journalDetails, :year, :citationCount, :citingPapers, :doi)
   end  
   
@@ -25,23 +25,28 @@ end
     end
 
     def parse(url)
-      papers = Nokogiri::HTML(open(url)).css(".cit-table .item")
+      STDERR << "Will check #{url}.\n"
+      page = Nokogiri::HTML(open(url,
+                                 'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2'), nil, 'utf-8')
+      papers = page.css(".gsc_a_tr")
       STDERR << "Found #{papers.length} papers.\n"
       papers.each do |paper|
-        paperDetails   = paper.css("#col-title")
-        title          = paperDetails[0].children[0].content.clean
-        googleUrl      = paperDetails[0].children[0].attribute('href')
-        authors        = paperDetails[0].children[2].content.clean
+        title          = paper.css(".gsc_a_at").text rescue ''
+        title.gsub!(/\.$/, '')
+
+        googleUrl      = paper.children[0].children[0].attribute('href').text rescue ''
+        authors        = paper.children[0].children[1].text.clean rescue ''
         authors.gsub!("...", "et al")
 
-        journal        = paperDetails[0].children[4].content
-        journalName    = journal.split(/,|\d/).first.clean
-        journalDetails = journal.gsub(journalName, '').clean
-
-        year           = paper.css("#col-year").text # is the last thing we get
+        journal        = paper.children[0].children[2].text rescue '' 
+        journalName    = journal.split(/,|\d/).first.clean   rescue ''
+        journalDetails = journal.gsub(journalName, '').clean 
+        year           = journalDetails.match(/, \d+$/)[0]
+        journalDetails = journalDetails.gsub(year, '').clean
+        year           = year.clean
 
         #citations
-        citeInfo      = paper.css(".cit-dark-link")
+        citeInfo      = paper.css('.gsc_a_ac')
         citationCount = citeInfo.text
         citationUrl   = citationCount.empty?  ? nil : citeInfo.attribute('href').to_s 
 
@@ -81,57 +86,49 @@ end
     end
 
     def to_html
-      ##@doc = Nokogiri::HTML::DocumentFragment.parse "" 
       builder = Nokogiri::HTML::Builder.new do |doc|
-        doc.html {
-          doc.body {
-            @parser.parsedPapers.each_with_index { |paper, index|
-              doc.div( :class => "publication") {
-                doc.p {
-                  doc.text ((@parser.parsedPapers).length - index).to_s + '. ' 
-
-                  doc.b    paper[:title] + '.'
-                  doc.text ' (' + paper[:year] + '). '
-
-                  if paper[:authors].include?(@nameToHighlight)
-                    doc.text( paper[:authors].sub(Regexp.new(@nameToHighlight + '.*'), '') )
-                    doc.span( :class => "label label-info") { doc.text @nameToHighlight }
-                    doc.text( paper[:authors].sub(Regexp.new('.*' + @nameToHighlight), '') )
-                  else
-                    doc.text( paper[:authors])
-                  end
-
-                  doc.br
-                  doc.em   paper[:journalName]
-                  doc.text ' '
-                  doc.text paper[:journalDetails]
-                  unless paper[ :doi].empty?
-                    doc.text(' ')
-                    doc.a( :href => URI.join("http://dx.doi.org/", paper[ :doi]))  { 
-                      doc.text "[DOI]" 
-                    } 
-                  end
-                  if @pdfLinks.keys.include?(paper[:title])
-                    doc.text(' ')
-                    doc.a( :href => @pdfLinks[paper[:title]])  { 
-                      doc.text "[PDF]"
-                    } 
-                  end
-                  if paper[ :citationCount].to_i > @minCitations
-                    doc.text(' ')
-                    doc.a( :href => paper[ :citingPapers]) { 
-                      doc.text("[Cited #{paper[ :citationCount]}x]") 
-                    } 
-                  end
-                  if altmetricDOIs.include?( paper[ :doi])
-                    doc.text(' ')
-                    doc.span( :class                => 'altmetric-embed',
-                              :'data-badge-popover' => 'bottom',
-                              :'data-doi'           => paper[ :doi]        )
-                  end
-                }
+        doc.div( :class => "publication") {
+          doc.ol {	
+            @parser.parsedPapers.each_with_index do |paper, index|
+              doc.li( :value=> ( (@parser.parsedPapers).length - index).to_s)  {
+                doc.b paper[:title] + '.'
+                doc.text ' (' + paper[:year] + '). '
+                if paper[:authors].include?(@nameToHighlight)
+                  doc.text( paper[:authors].sub(Regexp.new(@nameToHighlight + '.*'), '') )
+                  doc.span( :class => "label") { doc.text @nameToHighlight }
+                  doc.text( paper[:authors].sub(Regexp.new('.*' + @nameToHighlight), '') )
+                else
+                  doc.text( paper[:authors]) + '.'
+                end
+                
+                doc.em   ' ' + paper[:journalName]
+                doc.text ' ' + paper[:journalDetails]
+                unless paper[ :doi].empty?
+                  doc.text(' ')
+                  doc.a( :href => URI.join("http://dx.doi.org/", paper[ :doi]))  { 
+                    doc.text "[DOI]" 
+                  } 
+                end
+                if @pdfLinks.keys.include?(paper[:title])
+                  doc.text(' ')
+                  doc.a( :href => @pdfLinks[paper[:title]])  { 
+                    doc.text "[PDF]"
+                  } 
+                end
+                if paper[ :citationCount].to_i > @minCitations
+                  doc.text(' ')
+                  doc.a( :href => paper[ :citingPapers], :title => "Citations") { 
+                    doc.span( :class => "badge badge-inverse") { doc.test("#{paper[ :citationCount]}x") }
+                  } 
+                end
+                if altmetricDOIs.include?( paper[ :doi])
+                  doc.text(' ')
+                  doc.span( :class                => 'altmetric-embed',
+                            :'data-badge-popover' => 'bottom',
+                            :'data-doi'           => paper[ :doi]        )
+                end
               }
-            }
+            end
           }
         }
       end
