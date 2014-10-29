@@ -14,11 +14,11 @@ Some features:
 # How to use:
 
 ### As a ruby script:
-1. Configure "config.yml"
+1. Configure "config.yaml"
    If you want DOI retreival to work (including Altmetrics), you need to be 
    registered at crossref (its free). 
-2. Run `ruby bin/scrape.rb` 
-3. A scholar.html file is created with your publications from google scholar. 
+2. Run `ruby bin/rubyscholar` 
+3. A publications.html file is created with your publications from google scholar. 
 4. Thats it. 
 
 # Potential for improvement:
