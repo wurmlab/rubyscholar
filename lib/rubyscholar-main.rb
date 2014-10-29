@@ -39,9 +39,9 @@ module Rubyscholar
         authors.gsub!("...", "et al")
 
         journal        = paper.children[0].children[2].text rescue '' 
-        journalName    = journal.split(/,|\d/).first.clean   rescue ''
+        journalName    = journal.split(/,|\d/).first.clean  rescue ''
         journalDetails = journal.gsub(journalName, '').clean 
-        year           = journalDetails.match(/, \d+$/)[0]
+        year           = journalDetails.match(/, \d+$/)[0]  rescue ''
         journalDetails = journalDetails.gsub(year, '').clean
         year           = year.clean
 
