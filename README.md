@@ -17,7 +17,7 @@ Some features:
 1. Configure "config.yaml"
    If you want DOI retreival to work (including Altmetrics), you need to be 
    registered at crossref (its free). 
-2. Run `ruby bin/rubyscholar` 
+2. Run `bundle install` then `bundle exec rubyscholar`
 3. A publications.html file is created with your publications from google scholar. 
 4. Thats it. 
 
