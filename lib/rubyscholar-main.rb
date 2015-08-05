@@ -91,18 +91,18 @@ module Rubyscholar
           doc.ol {	
             @parser.parsedPapers.each_with_index do |paper, index|
               doc.li( :value=> ( (@parser.parsedPapers).length - index).to_s)  {
-                doc.b paper[:title] + '.'
-                doc.text ' (' + paper[:year] + '). '
+                doc.b paper[:title]
+                doc.text ' (' + paper[:year] + ') '
                 if paper[:authors].include?(@nameToHighlight)
                   doc.text( paper[:authors].sub(Regexp.new(@nameToHighlight + '.*'), '') )
                   doc.span( :class => "label") { doc.text @nameToHighlight }
                   doc.text( paper[:authors].sub(Regexp.new('.*' + @nameToHighlight), '') )
                 else
-                  doc.text( paper[:authors]) + '.'
+                  doc.text( paper[:authors])
                 end
-                
-                doc.em   ' ' + paper[:journalName]
-                doc.text ' ' + paper[:journalDetails]
+                doc.text '. '
+                doc.em   paper[:journalName] + ' '
+                doc.text paper[:journalDetails]
                 unless paper[ :doi].empty?
                   doc.text(' ')
                   doc.a( :href => URI.join("http://dx.doi.org/", paper[ :doi]))  { 
