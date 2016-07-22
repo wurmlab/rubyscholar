@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'rubyscholar-version'
-
+require 'json'
 
 class String
   def clean
@@ -83,6 +83,15 @@ module Rubyscholar
       @pdfLinks        = pdfLinks
       @altmetricDOIs   = altmetricDOIs
       @minCitations    = minCitationCount
+    end
+
+    def to_json
+      papers = {}
+      @parser.parsedPapers.each_with_index do |paper, idx|
+        index = @parser.parsedPapers.length - idx
+        papers[index] = paper.to_h
+      end
+      papers.to_json
     end
 
     def to_html
