@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'optparse'  # YW is this needed or redundant with commander?
 require 'commander/import'
 require 'yaml'
 require 'rubyscholar-main'
