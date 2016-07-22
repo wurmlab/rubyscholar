@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'nokogiri',  '~> 1.6', '>= 1.6.0'
   gem.add_runtime_dependency 'commander', '~> 4.1', '>= 4.1.5'
+  gem.add_runtime_dependency 'activesupport', '~> 4.0', '>= 4.2'
 
   gem.files         = Dir['lib/**/*'] + Dir['views/**/*'] + Dir['public/**/*'] + Dir['tests/**/*']
   gem.files         = gem.files + ['example.config.yaml']
