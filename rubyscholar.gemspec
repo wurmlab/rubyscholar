@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'commander', '~> 4.1', '>= 4.1.5'
 
   gem.files         = Dir['lib/**/*'] + Dir['views/**/*'] + Dir['public/**/*'] + Dir['tests/**/*']
-  gem.files         = gem.files + ['example.config.yml']
+  gem.files         = gem.files + ['example.config.yaml']
   gem.files         = gem.files + ['LICENSE.txt', 'README.md']
   gem.files         = gem.files + ['Gemfile',     'rubyscholar.gemspec']
 
