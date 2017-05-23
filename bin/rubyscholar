@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'optparse'  # YW is this needed or redundant with commander?
 require 'commander/import'
 require 'yaml'
 require 'rubyscholar-main'
@@ -42,9 +40,32 @@ command :scrape do |c|
     end
 
     STDERR << "Outputting to #{options.output}\n."
-    f = File.open(options.output,'w')
-    f.write html
-    f.close
+    File.open(options.output,'w') { |f| f.write html }
   end 
 end
 
+
+command :scrape_to_json do |c|
+  c.syntax = 'rubyscholar scrape_to_json [options]'
+  c.description = "Scrape Google Scholar for new publications and output a JSON file"
+
+  c.option '--config [Config File]', 'Config file to use'
+  c.option '--output [Output File]',  'JSON output for publication list'
+  
+  c.action do |args, options|
+    options.default \
+    :config => 'config.yaml',
+    :output  => 'publications.json'
+    #rest stays in this block bc we need to access options
+
+    raise IOError, "You must specify config file via --config\n" if options.config.nil?
+    config    = YAML.load_file(options.config) 
+    parsed    = Rubyscholar::Parser.new(config["url"], 
+                                        config["email"])
+    json      = Rubyscholar::Formatter.new(parsed).to_json
+
+
+    STDERR << "Outputting to #{options.output}\n."
+    File.open(options.output,'w') { |f| f.write json }
+  end 
+end
